@@ -14,8 +14,8 @@
 }
 
 body{
-    font-family:system-ui,sans-serif;
-    background:#f8f9fa;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
     color:#333;
 }
 
@@ -27,7 +27,7 @@ body{
     background-position:center;
     color:white;
     text-align:center;
-    padding:100px 20px;
+    padding:120px 20px;
 }
 
 .hero h1{
@@ -39,18 +39,49 @@ body{
     font-size:1.2rem;
 }
 
+.whatsapp-btn{
+    display:inline-block;
+    margin-top:20px;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:40px;
+    font-weight:bold;
+}
+
 .container{
-    max-width:800px;
+    max-width:700px;
     margin:auto;
     padding:20px;
 }
 
-.form-section{
-    background:#fff;
-    margin-top:-50px;
-    padding:30px;
+.booking-card{
+    background:white;
+    margin-top:-60px;
     border-radius:15px;
-    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    box-shadow:0 5px 25px rgba(0,0,0,.15);
+    overflow:hidden;
+}
+
+.form-wrapper{
+    position:relative;
+    min-height:500px;
+    overflow:hidden;
+    padding:30px;
+}
+
+.step{
+    width:100%;
+}
+
+#routeSelection{
+    transition:all .7s ease;
+}
+
+#routeSelection.hide{
+    transform:translateX(-120%);
+    opacity:0;
 }
 
 .route-card{
@@ -59,7 +90,7 @@ body{
     margin:12px 0;
     border-radius:10px;
     cursor:pointer;
-    font-weight:600;
+    font-weight:bold;
     text-align:center;
     transition:.3s;
 }
@@ -67,18 +98,21 @@ body{
 .route-card:hover{
     background:#28a745;
     color:white;
-    transform:translateY(-3px);
+    transform:translateY(-2px);
 }
 
-.slide-form{
-    max-height:0;
-    overflow:hidden;
-    transition:max-height .8s ease;
+#passengerForm{
+    position:absolute;
+    top:30px;
+    left:100%;
+    width:calc(100% - 60px);
+    opacity:0;
+    transition:all .7s ease;
 }
 
-.slide-form.show{
-    max-height:700px;
-    margin-top:20px;
+#passengerForm.show{
+    left:30px;
+    opacity:1;
 }
 
 input{
@@ -97,7 +131,7 @@ button{
     color:white;
     border:none;
     border-radius:8px;
-    font-size:1.2rem;
+    font-size:1.1rem;
     cursor:pointer;
 }
 
@@ -107,128 +141,135 @@ button:hover{
 
 .success{
     display:none;
-    margin-top:20px;
     background:#d4edda;
     color:#155724;
     padding:20px;
+    margin-top:20px;
     border-radius:10px;
     text-align:center;
 }
 
-.contact{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 25px;
-    background:#25D366;
-    color:white;
-    text-decoration:none;
-    border-radius:50px;
-    font-weight:bold;
-}
-
 footer{
-    text-align:center;
-    padding:40px 20px;
     background:#222;
     color:#ddd;
+    text-align:center;
+    padding:30px;
     margin-top:40px;
 }
 
 @media(max-width:768px){
-    .hero h1{
-        font-size:2rem;
-    }
+
+.hero h1{
+    font-size:2rem;
+}
+
+.form-wrapper{
+    min-height:550px;
+}
+
 }
 </style>
 </head>
 
 <body>
 
-<div class="hero">
+<section class="hero">
     <h1>Maua - Meru - Chuka - Embu - Kitui - Mombasa Express</h1>
-    <p>Comfortable Modern Buses • Daily Departures</p>
+    <p>Modern Luxury Coaches • Safe & Reliable Travel</p>
 
-    <a href="https://wa.me/254792425351" class="contact">
-        WhatsApp 0792425351
+    <a class="whatsapp-btn"
+       href="https://wa.me/254792425351">
+       WhatsApp 0792425351
     </a>
-</div>
+</section>
 
 <div class="container">
 
-    <div class="form-section">
+    <div class="booking-card">
 
-        <div id="routeSelection">
+        <div class="form-wrapper">
 
-            <h2 style="text-align:center;margin-bottom:20px;">
-                Select Your Route
-            </h2>
+            <!-- STEP 1 -->
 
-            <div class="route-card"
-                onclick="selectRoute('Maua → Mombasa','2500')">
-                Maua → Mombasa @ KSh 2,500
+            <div id="routeSelection" class="step">
+
+                <h2 style="text-align:center;margin-bottom:20px;">
+                    Select Your Boarding Point
+                </h2>
+
+                <div class="route-card"
+                     onclick="selectRoute('Maua → Mombasa','2500')">
+                     Maua → Mombasa @ KSh 2,500
+                </div>
+
+                <div class="route-card"
+                     onclick="selectRoute('Meru → Mombasa','2500')">
+                     Meru → Mombasa @ KSh 2,500
+                </div>
+
+                <div class="route-card"
+                     onclick="selectRoute('Chuka → Mombasa','2500')">
+                     Chuka → Mombasa @ KSh 2,500
+                </div>
+
+                <div class="route-card"
+                     onclick="selectRoute('Embu → Mombasa','2500')">
+                     Embu → Mombasa @ KSh 2,500
+                </div>
+
+                <div class="route-card"
+                     onclick="selectRoute('Kitui → Mombasa','1500')">
+                     Kitui → Mombasa @ KSh 1,500
+                </div>
+
             </div>
 
-            <div class="route-card"
-                onclick="selectRoute('Meru → Mombasa','2500')">
-                Meru → Mombasa @ KSh 2,500
+            <!-- STEP 2 -->
+
+            <div id="passengerForm">
+
+                <h2 style="text-align:center;margin-bottom:10px;">
+                    Passenger Details
+                </h2>
+
+                <h3 id="selectedRoute"
+                    style="text-align:center;color:#28a745;margin-bottom:20px;">
+                </h3>
+
+                <form id="bookingForm">
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="Full Name"
+                        required>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Phone Number"
+                        required>
+
+                    <input
+                        type="text"
+                        id="idNumber"
+                        placeholder="ID Number / Passport"
+                        required>
+
+                    <button type="submit">
+                        Book Seat
+                    </button>
+
+                </form>
+
+                <div id="successMessage" class="success">
+                    <h3>✅ Booking Received!</h3>
+                    <p>Reference: <strong id="refNumber"></strong></p>
+                    <p>Your booking request has been sent.</p>
+                </div>
+
             </div>
 
-            <div class="route-card"
-                onclick="selectRoute('Chuka → Mombasa','2500')">
-                Chuka → Mombasa @ KSh 2,500
-            </div>
-
-            <div class="route-card"
-                onclick="selectRoute('Embu → Mombasa','2500')">
-                Embu → Mombasa @ KSh 2,500
-            </div>
-
-            <div class="route-card"
-                onclick="selectRoute('Kitui → Mombasa','1500')">
-                Kitui → Mombasa @ KSh 1,500
-            </div>
-
-        </div>
-
-        <div id="passengerForm" class="slide-form">
-
-            <h3 id="selectedRoute"
-                style="text-align:center;margin-bottom:20px;color:#28a745;">
-            </h3>
-
-            <form id="bookingForm">
-
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Full Name"
-                    required>
-
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="Phone Number"
-                    required>
-
-                <input
-                    type="text"
-                    id="idNumber"
-                    placeholder="ID Number / Passport"
-                    required>
-
-                <button type="submit">
-                    Book Seat
-                </button>
-
-            </form>
-
-        </div>
-
-        <div id="successMessage" class="success">
-            <h3>✅ Booking Received!</h3>
-            <p>Reference: <strong id="refNumber"></strong></p>
-            <p>Your booking details have been prepared.</p>
-            <p>Our team will contact you shortly.</p>
         </div>
 
     </div>
@@ -236,7 +277,7 @@ footer{
 </div>
 
 <footer>
-    <p>Maua - Meru - Chuka - Embu - Kitui - Mombasa Express © 2026</p>
+    Maua - Meru - Chuka - Embu - Kitui - Mombasa Express © 2026
 </footer>
 
 <script>
@@ -252,13 +293,13 @@ function selectRoute(route, price){
     document.getElementById("selectedRoute").innerHTML =
         route + " @ KSh " + price;
 
-    document.getElementById("passengerForm")
-        .classList.add("show");
+    document.getElementById("routeSelection")
+        .classList.add("hide");
 
-    document.getElementById("passengerForm")
-        .scrollIntoView({
-            behavior:"smooth"
-        });
+    setTimeout(() => {
+        document.getElementById("passengerForm")
+            .classList.add("show");
+    }, 250);
 }
 
 document.getElementById("bookingForm")
@@ -272,42 +313,42 @@ document.getElementById("bookingForm")
     const phone =
         document.getElementById("phone").value.trim();
 
-    const idNum =
+    const id =
         document.getElementById("idNumber").value.trim();
 
     const ref =
         "MM" +
         Math.floor(100000 + Math.random() * 900000);
 
-    const timestamp =
+    const date =
         new Date().toLocaleString("en-KE");
 
     const message = encodeURIComponent(
 `*NEW BUS BOOKING*
 
 Reference: ${ref}
-Date: ${timestamp}
+Date: ${date}
 
 Route: ${selectedRoute}
 Amount: KSh ${selectedPrice}
 
 Full Name: ${name}
 Phone: ${phone}
-ID Number: ${idNum}`
+ID Number: ${id}`
     );
 
-    const whatsappUrl =
-        `https://wa.me/254792425351?text=${message}`;
+    window.open(
+        `https://wa.me/254792425351?text=${message}`,
+        "_blank"
+    );
 
-    window.open(whatsappUrl, "_blank");
+    document.getElementById("refNumber")
+        .innerText = ref;
 
     document.getElementById("successMessage")
         .style.display = "block";
 
-    document.getElementById("refNumber")
-        .textContent = ref;
-
-    document.getElementById("bookingForm").reset();
+    this.reset();
 });
 
 </script>
@@ -315,109 +356,3 @@ ID Number: ${idNum}`
 </body>
 </html>
 ```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kitui → Mombasa Bus Offer - KSh 1,800</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #333; }
-    .hero {
-      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://source.unsplash.com/random/1600x900/?bus,kenya,mombasa') center/cover;
-      color: white; text-align: center; padding: 100px 20px 80px;
-    }
-    .hero h1 { font-size: 2.8rem; }
-    .price { font-size: 2.8rem; color: #ffd700; font-weight: bold; }
-    .container { max-width: 700px; margin: 0 auto; padding: 20px; }
-    .form-section {
-      background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-top: -40px;
-    }
-    input { width: 100%; padding: 15px; margin: 12px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 1.1rem; }
-    button {
-      width: 100%; padding: 16px; background: #28a745; color: white; border: none;
-      border-radius: 8px; font-size: 1.3rem; cursor: pointer; margin-top: 10px;
-    }
-    .success { display: none; background: #d4edda; color: #155724; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; }
-    .contact { background: #25D366; color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; display: inline-block; margin: 15px 0; }
-  </style>
-</head>
-<body>
-
-  <div class="hero">
-    <div class="container">
-      <h1>Kitui to Mombasa</h1>
-      <p class="price">KSh 1,800 Only</p>
-      <p>Limited Time Offer</p>
-      <a href="https://wa.me/254792425351" class="contact">📞 WhatsApp 0792425351</a>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="form-section" id="book">
-      <h2 style="text-align:center; margin-bottom:20px;">Book Your Seat Now</h2>
-      
-      <form id="bookingForm">
-        <input type="text" id="fullName" placeholder="Full Name" required>
-        <input type="tel" id="phone" placeholder="Phone Number (0792...)" required>
-        <input type="text" id="idNumber" placeholder="ID Number / Passport" required>
-        
-        <button type="submit">Book Now - KSh 1,800</button>
-      </form>
-
-      <div id="successMessage" class="success">
-        <h3>✅ Booking Received!</h3>
-        <p>Reference: <strong id="refNumber"></strong></p>
-        <p>We will contact you shortly.</p>
-        <p>Call/WhatsApp: <strong>0792425351</strong></p>
-      </div>
-    </div>
-  </div>
-
-  <footer style="text-align:center; padding:40px 20px; background:#222; color:#ddd; margin-top:40px;">
-    <p>Kitui-Mombasa Express • 2026</p>
-  </footer>
-
-  <script>
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('fullName').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const idNum = document.getElementById('idNumber').value.trim();
-      
-      if (!name || !phone || !idNum) {
-        alert("Please fill all fields");
-        return;
-      }
-
-      const ref = "KM" + Math.floor(100000 + Math.random() * 900000);
-      const timestamp = new Date().toLocaleString('en-KE');
-
-      // Message that will be sent to your WhatsApp
-      const message = encodeURIComponent(
-        `*New Ticket Booking*\n\n` +
-        `Reference: ${ref}\n` +
-        `Date: ${timestamp}\n\n` +
-        `Full Name: ${name}\n` +
-        `Phone: ${phone}\n` +
-        `ID Number: ${idNum}\n\n` +
-        `Route: Kitui → Mombasa\n` +
-        `Amount: KSh 1,800`
-      );
-
-      // Open WhatsApp with pre-filled message to your number
-      const whatsappUrl = `https://wa.me/254792425351?text=${message}`;
-      window.open(whatsappUrl, '_blank');
-
-      // Show success to customer
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('refNumber').textContent = ref;
-
-      // Optional: Reset form
-      document.getElementById('bookingForm').reset();
-    });
-  </script>
-</body>
-</html>
