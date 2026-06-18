@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitui → Mombasa Bus Offer - KSh 1,800</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #333; }
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://source.unsplash.com/random/1600x900/?bus,kenya,mombasa') center/cover;
+      color: white; text-align: center; padding: 100px 20px 80px;
+    }
+    .hero h1 { font-size: 2.8rem; }
+    .price { font-size: 2.8rem; color: #ffd700; font-weight: bold; }
+    .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+    .form-section {
+      background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-top: -40px;
+    }
+    input { width: 100%; padding: 15px; margin: 12px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 1.1rem; }
+    button {
+      width: 100%; padding: 16px; background: #28a745; color: white; border: none;
+      border-radius: 8px; font-size: 1.3rem; cursor: pointer; margin-top: 10px;
+    }
+    .success { display: none; background: #d4edda; color: #155724; padding: 25px; border-radius: 10px; text-align: center; margin-top: 20px; }
+    .contact { background: #25D366; color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; display: inline-block; margin: 15px 0; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="container">
+      <h1>Kitui to Mombasa</h1>
+      <p class="price">KSh 1,800 Only</p>
+      <p>Limited Time Offer</p>
+      <a href="https://wa.me/254792425351" class="contact">📞 WhatsApp 0792425351</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="form-section" id="book">
+      <h2 style="text-align:center; margin-bottom:20px;">Book Your Seat Now</h2>
+      
+      <form id="bookingForm">
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="tel" id="phone" placeholder="Phone Number (0792...)" required>
+        <input type="text" id="idNumber" placeholder="ID Number / Passport" required>
+        
+        <button type="submit">Book Now - KSh 1,800</button>
+      </form>
+
+      <div id="successMessage" class="success">
+        <h3>✅ Booking Received!</h3>
+        <p>Reference: <strong id="refNumber"></strong></p>
+        <p>We will contact you shortly.</p>
+        <p>Call/WhatsApp: <strong>0792425351</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:40px 20px; background:#222; color:#ddd; margin-top:40px;">
+    <p>Kitui-Mombasa Express • 2026</p>
+  </footer>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const idNum = document.getElementById('idNumber').value.trim();
+      
+      if (!name || !phone || !idNum) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const ref = "KM" + Math.floor(100000 + Math.random() * 900000);
+      const timestamp = new Date().toLocaleString('en-KE');
+
+      // Message that will be sent to your WhatsApp
+      const message = encodeURIComponent(
+        `*New Ticket Booking*\n\n` +
+        `Reference: ${ref}\n` +
+        `Date: ${timestamp}\n\n` +
+        `Full Name: ${name}\n` +
+        `Phone: ${phone}\n` +
+        `ID Number: ${idNum}\n\n` +
+        `Route: Kitui → Mombasa\n` +
+        `Amount: KSh 1,800`
+      );
+
+      // Open WhatsApp with pre-filled message to your number
+      const whatsappUrl = `https://wa.me/254792425351?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+
+      // Show success to customer
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('refNumber').textContent = ref;
+
+      // Optional: Reset form
+      document.getElementById('bookingForm').reset();
+    });
+  </script>
+</body>
+</html>
