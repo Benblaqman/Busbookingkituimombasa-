@@ -1,3 +1,320 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maua - Meru - Chuka - Embu - Kitui - Mombasa Express</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:system-ui,sans-serif;
+    background:#f8f9fa;
+    color:#333;
+}
+
+.hero{
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=80');
+    background-size:cover;
+    background-position:center;
+    color:white;
+    text-align:center;
+    padding:100px 20px;
+}
+
+.hero h1{
+    font-size:2.8rem;
+    margin-bottom:10px;
+}
+
+.hero p{
+    font-size:1.2rem;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+}
+
+.form-section{
+    background:#fff;
+    margin-top:-50px;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+.route-card{
+    background:#f5f5f5;
+    padding:18px;
+    margin:12px 0;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    text-align:center;
+    transition:.3s;
+}
+
+.route-card:hover{
+    background:#28a745;
+    color:white;
+    transform:translateY(-3px);
+}
+
+.slide-form{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .8s ease;
+}
+
+.slide-form.show{
+    max-height:700px;
+    margin-top:20px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin:12px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:1rem;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:1.2rem;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#218838;
+}
+
+.success{
+    display:none;
+    margin-top:20px;
+    background:#d4edda;
+    color:#155724;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.contact{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 25px;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:40px 20px;
+    background:#222;
+    color:#ddd;
+    margin-top:40px;
+}
+
+@media(max-width:768px){
+    .hero h1{
+        font-size:2rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+    <h1>Maua - Meru - Chuka - Embu - Kitui - Mombasa Express</h1>
+    <p>Comfortable Modern Buses • Daily Departures</p>
+
+    <a href="https://wa.me/254792425351" class="contact">
+        WhatsApp 0792425351
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="form-section">
+
+        <div id="routeSelection">
+
+            <h2 style="text-align:center;margin-bottom:20px;">
+                Select Your Route
+            </h2>
+
+            <div class="route-card"
+                onclick="selectRoute('Maua → Mombasa','2500')">
+                Maua → Mombasa @ KSh 2,500
+            </div>
+
+            <div class="route-card"
+                onclick="selectRoute('Meru → Mombasa','2500')">
+                Meru → Mombasa @ KSh 2,500
+            </div>
+
+            <div class="route-card"
+                onclick="selectRoute('Chuka → Mombasa','2500')">
+                Chuka → Mombasa @ KSh 2,500
+            </div>
+
+            <div class="route-card"
+                onclick="selectRoute('Embu → Mombasa','2500')">
+                Embu → Mombasa @ KSh 2,500
+            </div>
+
+            <div class="route-card"
+                onclick="selectRoute('Kitui → Mombasa','1500')">
+                Kitui → Mombasa @ KSh 1,500
+            </div>
+
+        </div>
+
+        <div id="passengerForm" class="slide-form">
+
+            <h3 id="selectedRoute"
+                style="text-align:center;margin-bottom:20px;color:#28a745;">
+            </h3>
+
+            <form id="bookingForm">
+
+                <input
+                    type="text"
+                    id="fullName"
+                    placeholder="Full Name"
+                    required>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Phone Number"
+                    required>
+
+                <input
+                    type="text"
+                    id="idNumber"
+                    placeholder="ID Number / Passport"
+                    required>
+
+                <button type="submit">
+                    Book Seat
+                </button>
+
+            </form>
+
+        </div>
+
+        <div id="successMessage" class="success">
+            <h3>✅ Booking Received!</h3>
+            <p>Reference: <strong id="refNumber"></strong></p>
+            <p>Your booking details have been prepared.</p>
+            <p>Our team will contact you shortly.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>Maua - Meru - Chuka - Embu - Kitui - Mombasa Express © 2026</p>
+</footer>
+
+<script>
+
+let selectedRoute = "";
+let selectedPrice = "";
+
+function selectRoute(route, price){
+
+    selectedRoute = route;
+    selectedPrice = price;
+
+    document.getElementById("selectedRoute").innerHTML =
+        route + " @ KSh " + price;
+
+    document.getElementById("passengerForm")
+        .classList.add("show");
+
+    document.getElementById("passengerForm")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+}
+
+document.getElementById("bookingForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const name =
+        document.getElementById("fullName").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    const idNum =
+        document.getElementById("idNumber").value.trim();
+
+    const ref =
+        "MM" +
+        Math.floor(100000 + Math.random() * 900000);
+
+    const timestamp =
+        new Date().toLocaleString("en-KE");
+
+    const message = encodeURIComponent(
+`*NEW BUS BOOKING*
+
+Reference: ${ref}
+Date: ${timestamp}
+
+Route: ${selectedRoute}
+Amount: KSh ${selectedPrice}
+
+Full Name: ${name}
+Phone: ${phone}
+ID Number: ${idNum}`
+    );
+
+    const whatsappUrl =
+        `https://wa.me/254792425351?text=${message}`;
+
+    window.open(whatsappUrl, "_blank");
+
+    document.getElementById("successMessage")
+        .style.display = "block";
+
+    document.getElementById("refNumber")
+        .textContent = ref;
+
+    document.getElementById("bookingForm").reset();
+});
+
+</script>
+
+</body>
+</html>
+```
 <!DOCTYPE html>
 <html lang="en">
 <head>
