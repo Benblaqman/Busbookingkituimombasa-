@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -256,6 +255,13 @@ footer{
                         placeholder="ID Number / Passport"
                         required>
 
+                    <!-- Date of travel input added -->
+                    <input
+                        type="date"
+                        id="travelDate"
+                        placeholder="Date of Travel"
+                        required>
+
                     <button type="submit">
                         Book Seat
                     </button>
@@ -299,6 +305,14 @@ function selectRoute(route, price){
     setTimeout(() => {
         document.getElementById("passengerForm")
             .classList.add("show");
+
+        // set the travel date's min and default to today when form is shown
+        const travelDateInput = document.getElementById('travelDate');
+        if (travelDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            travelDateInput.min = today;
+            travelDateInput.value = today;
+        }
     }, 250);
 }
 
@@ -316,6 +330,9 @@ document.getElementById("bookingForm")
     const id =
         document.getElementById("idNumber").value.trim();
 
+    const travelDate =
+        document.getElementById("travelDate").value;
+
     const ref =
         "MM" +
         Math.floor(100000 + Math.random() * 900000);
@@ -324,17 +341,7 @@ document.getElementById("bookingForm")
         new Date().toLocaleString("en-KE");
 
     const message = encodeURIComponent(
-`*NEW BUS BOOKING*
-
-Reference: ${ref}
-Date: ${date}
-
-Route: ${selectedRoute}
-Amount: KSh ${selectedPrice}
-
-Full Name: ${name}
-Phone: ${phone}
-ID Number: ${id}`
+`*NEW BUS BOOKING*\n\nReference: ${ref}\nBooking Time: ${date}\n\nTravel Date: ${travelDate}\n\nRoute: ${selectedRoute}\nAmount: KSh ${selectedPrice}\n\nFull Name: ${name}\nPhone: ${phone}\nID Number: ${id}`
     );
 
     window.open(
@@ -355,4 +362,3 @@ ID Number: ${id}`
 
 </body>
 </html>
-```
