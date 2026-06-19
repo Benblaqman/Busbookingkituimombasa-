@@ -4,6 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maua - Meru - Chuka - Embu - Kitui - Mombasa Express</title>
+<style>
+/* Smooth styling for the payment screen overlay */
+.mpesa-modal-overlay {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.85); 
+    z-index: 9999; 
+    justify-content: center; 
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+.mpesa-card {
+    background: #ffffff; 
+    padding: 30px; 
+    border-radius: 16px; 
+    max-width: 380px; 
+    width: 90%; 
+    text-align: center; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+.mpesa-btn-primary {
+    display: block; 
+    background: #4CAF50; 
+    color: white; 
+    padding: 14px; 
+    margin-bottom: 15px; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 16px;
+    transition: background 0.2s ease;
+}
+.mpesa-btn-primary:hover { background: #43A047; }
+.manual-box {
+    background: #f5f5f5; 
+    padding: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+    text-align: left; 
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+}
+.copy-btn {
+    float: right; 
+    background: #007BFF; 
+    color: white; 
+    border: none; 
+    font-size: 12px; 
+    padding: 3px 8px; 
+    border-radius: 4px; 
+    cursor: pointer;
+}
+.copy-btn:hover { background: #0056b3; }
+</style>
 
 <style>
 *{
@@ -336,7 +393,7 @@ footer{
   <div class="modal" role="document" aria-labelledby="modalTitle">
     <h3 id="modalTitle">Confirm Booking Details</h3>
     <div class="meta"><strong>Route:</strong> <span id="confirmRoute"></span></div>
-    <div class="meta"><strong>Amount:</strong> KSh <span id="confirmPrice"></span></div>
+    <div class="meta"><strong>Price:</strong> KSh <span id="confirmPrice"></span></div>
     <div class="meta"><strong>Travel Date:</strong> <span id="confirmDate"></span></div>
     <div class="meta"><strong>Passenger:</strong> <span id="confirmName"></span></div>
     <div class="meta"><strong>Phone:</strong> <span id="confirmPhone"></span></div>
@@ -349,124 +406,19 @@ footer{
   </div>
 </div>
 
-<footer>
-    Maua - Meru - Chuka - Embu - Kitui - Mombasa Express © 2026
-</footer>
+<!-- M-Pesa Checkout Modal Overlay -->
+<div id="mpesaPaymentModal" class="mpesa-modal-overlay">
+    <div class="mpesa-card">
+        <img src="https://wikimedia.org" alt="M-Pesa logo" style="width:130px; margin-bottom:10px;">
+        <h3 style="color:#2E7D32; margin: 5px 0 15px 0; font-size: 22px;">Pay KSh <span id="checkoutAmount">0</span></h3>
+        
+        <!-- Automated Protocol Triggers -->
+        <a id="mpesaDeepLink" href="mpesa://" class="mpesa-btn-primary">
+            📱 Open M-Pesa App
+        </a>
 
-<script>
-
-let selectedRoute = "";
-let selectedPrice = "";
-
-function selectRoute(route, price){
-
-    selectedRoute = route;
-    selectedPrice = price;
-
-    document.getElementById("selectedRoute").innerHTML =
-        route + " @ KSh " + price;
-
-    document.getElementById("routeSelection")
-        .classList.add("hide");
-
-    setTimeout(() => {
-        document.getElementById("passengerForm")
-            .classList.add("show");
-
-        // set the travel date's min and default to today when form is shown
-        const travelDateInput = document.getElementById('travelDate');
-        if (travelDateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            travelDateInput.min = today;
-            travelDateInput.value = today;
-        }
-    }, 250);
-}
-
-const bookingForm = document.getElementById("bookingForm");
-const modalBackdrop = document.getElementById('modalBackdrop');
-const confirmRouteEl = document.getElementById('confirmRoute');
-const confirmPriceEl = document.getElementById('confirmPrice');
-const confirmDateEl = document.getElementById('confirmDate');
-const confirmNameEl = document.getElementById('confirmName');
-const confirmPhoneEl = document.getElementById('confirmPhone');
-const confirmIdEl = document.getElementById('confirmId');
-const confirmBtn = document.getElementById('confirmBooking');
-const editBtn = document.getElementById('editBooking');
-
-function formatTravelDate(isoDate){
-  if (!isoDate) return '';
-  const d = new Date(isoDate + 'T00:00:00');
-  return d.toLocaleDateString('en-GB', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
-}
-
-bookingForm.addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const name = document.getElementById("fullName").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const id = document.getElementById("idNumber").value.trim();
-    const travelDateRaw = document.getElementById("travelDate").value;
-    const travelDateHuman = formatTravelDate(travelDateRaw);
-
-    // populate modal with friendly values
-    confirmRouteEl.innerText = selectedRoute;
-    confirmPriceEl.innerText = selectedPrice;
-    confirmDateEl.innerText = travelDateHuman || travelDateRaw;
-    confirmNameEl.innerText = name;
-    confirmPhoneEl.innerText = phone;
-    confirmIdEl.innerText = id;
-
-    // show modal
-    modalBackdrop.style.display = 'flex';
-    modalBackdrop.setAttribute('aria-hidden','false');
-
-    // focus on confirm button for keyboard users
-    confirmBtn.focus();
-
-    // store values on the confirm button dataset so confirm handler can access
-    confirmBtn.dataset.name = name;
-    confirmBtn.dataset.phone = phone;
-    confirmBtn.dataset.id = id;
-    confirmBtn.dataset.travelDateRaw = travelDateRaw;
-    confirmBtn.dataset.travelDateHuman = travelDateHuman;
-});
-
-editBtn.addEventListener('click', function(){
-  modalBackdrop.style.display = 'none';
-  modalBackdrop.setAttribute('aria-hidden','true');
-});
-
-confirmBtn.addEventListener('click', function(){
-  // read stored values
-  const name = this.dataset.name;
-  const phone = this.dataset.phone;
-  const id = this.dataset.id;
-  const travelDateRaw = this.dataset.travelDateRaw;
-  const travelDateHuman = this.dataset.travelDateHuman || travelDateRaw;
-
-  const ref = "MM" + Math.floor(100000 + Math.random() * 900000);
-  const bookingTime = new Date().toLocaleString("en-KE");
-
-  const message = encodeURIComponent(
-`*NEW BUS BOOKING*\n\nReference: ${ref}\nBooking Time: ${bookingTime}\n\nTravel Date: ${travelDateHuman}\n\nRoute: ${selectedRoute}\nAmount: KSh ${selectedPrice}\n\nFull Name: ${name}\nPhone: ${phone}\nID Number: ${id}`
-  );
-
-  window.open(`https://wa.me/254792425351?text=${message}`, '_blank');
-
-  // show success
-  document.getElementById("refNumber").innerText = ref;
-  document.getElementById("successMessage").style.display = 'block';
-
-  // hide modal
-  modalBackdrop.style.display = 'none';
-  modalBackdrop.setAttribute('aria-hidden','true');
-
-  // reset form
-  bookingForm.reset();
-});
-
-</script>
-
-</body>
-</html>
+        <div style="border-top:1px dashed #ccc; margin: 20px 0;"></div>
+        <p style="font-size:11px; font-weight:bold; color:#666; margin-bottom:10px; letter-spacing: 0.5px;">OR MANUALLY TRANSFER FUNDS</p>
+        
+        <!-- Local Parameter Parameters (Change to your details) -->
+        <div class="manual-box">
