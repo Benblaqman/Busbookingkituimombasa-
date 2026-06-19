@@ -11,48 +11,63 @@
             --primary: #e30613;
         }
         
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f8f9fa;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), 
+                        url('https://images.unsplash.com/photo-1544620347-c4fd70cbf6d6?q=80&w=2070') no-repeat center center fixed;
+            background-size: cover;
             color: #333;
+            min-height: 100vh;
         }
         
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
         
         header {
-            background: var(--primary);
+            background: rgba(227, 6, 19, 0.95);
             color: white;
-            padding: 20px;
+            padding: 20px 15px;
             text-align: center;
-            border-radius: 8px 8px 0 0;
+            border-radius: 12px 12px 0 0;
+            backdrop-filter: blur(8px);
         }
         
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             padding: 25px;
             margin-bottom: 20px;
+            backdrop-filter: blur(10px);
         }
         
         select, input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 10px 0;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
         }
         
+        label {
+            display: block;
+            margin: 8px 0 4px;
+            font-weight: 500;
+        }
+        
         button {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: var(--primary);
             color: white;
             border: none;
@@ -60,11 +75,13 @@
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            margin: 10px 0;
+            margin: 12px 0;
+            transition: all 0.3s;
         }
         
         button:hover {
             background: #c0040f;
+            transform: translateY(-2px);
         }
         
         .step {
@@ -76,10 +93,11 @@
         }
         
         .fare {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--primary);
             text-align: center;
+            padding: 15px 0;
         }
         
         .modal {
@@ -87,39 +105,62 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.75);
             align-items: center;
             justify-content: center;
             z-index: 1000;
+            padding: 15px;
         }
         
         .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 400px;
+            padding: 30px 20px;
+            border-radius: 16px;
+            max-width: 420px;
+            width: 100%;
             text-align: center;
-        }
-        
-        .success {
-            color: #28a745;
-            font-size: 48px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .booking-code {
             background: #f0f0f0;
-            padding: 15px;
+            padding: 16px;
             border-radius: 8px;
             font-family: monospace;
-            font-size: 22px;
-            letter-spacing: 2px;
+            font-size: 24px;
+            letter-spacing: 3px;
+            margin: 15px 0;
         }
         
         .status {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 6px;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 8px;
             font-weight: 500;
+            text-align: center;
+        }
+        
+        /* Responsive Improvements */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            .card {
+                padding: 20px 18px;
+                margin-bottom: 15px;
+            }
+            header {
+                padding: 18px 12px;
+            }
+            button {
+                padding: 15px;
+                font-size: 17px;
+            }
+        }
+        
+        .header-subtitle {
+            opacity: 0.9;
+            margin: 5px 0 0;
         }
     </style>
 </head>
@@ -127,7 +168,7 @@
     <div class="container">
         <header>
             <h1>MMSA Bus Services</h1>
-            <p>Kitui → Mombasa</p>
+            <p class="header-subtitle">Reliable • Comfortable • Modern Coaches</p>
         </header>
 
         <!-- Step 1: Selection -->
@@ -144,7 +185,7 @@
             </select>
             
             <div class="fare" id="fareDisplay">KSh 1,500</div>
-            <button onclick="nextStep(2)">Continue to Details</button>
+            <button onclick="nextStep(2)">Continue to Passenger Details</button>
         </div>
 
         <!-- Step 2: Details -->
@@ -165,14 +206,14 @@
                 
                 <button type="button" onclick="bookSeat()">Book Seat</button>
             </form>
-            <button onclick="nextStep(1)" style="background:#666;">Back</button>
+            <button onclick="nextStep(1)" style="background:#666;">← Back</button>
         </div>
 
         <!-- Confirmation Modal -->
         <div id="confirmModal" class="modal">
             <div class="modal-content">
-                <h2>Confirm Booking</h2>
-                <p id="confirmDetails"></p>
+                <h2>Confirm Your Booking</h2>
+                <p id="confirmDetails" style="text-align:left; line-height:1.6;"></p>
                 <button onclick="confirmBooking()" style="background:#28a745;">Confirm & Send</button>
                 <button onclick="closeModal()" style="background:#666;">Cancel</button>
             </div>
@@ -180,18 +221,18 @@
 
         <!-- Step 4: Payment -->
         <div id="step4" class="step card">
-            <h2>Complete Payment via M-Pesa</h2>
+            <h2>Step 3: Complete M-Pesa Payment</h2>
             <div id="bookingInfo" style="text-align:center; margin:20px 0;"></div>
             
-            <div style="background:#f0f8ff; padding:20px; border-radius:8px; margin:20px 0;">
-                <p><strong>Paybill / Till:</strong> <span id="paybill">123456</span></p>
-                <p><strong>Account Reference:</strong> <span id="refCode" class="booking-code"></span></p>
-                <p>Amount: KSh <span id="payAmount">1500</span></p>
+            <div style="background:#f0f8ff; padding:20px; border-radius:12px; margin:20px 0; border:1px solid #b3d9ff;">
+                <p><strong>Paybill:</strong> <span id="paybill">123456</span></p>
+                <p><strong>Account:</strong> <span id="refCode" class="booking-code"></span></p>
+                <p><strong>Amount:</strong> KSh <span id="payAmount">1500</span></p>
             </div>
             
-            <button onclick="simulateMpesa()">Pay with M-Pesa App</button>
-            <button onclick="copyPayment()" style="background:#17a2b8;">Copy Details</button>
-            <button onclick="finishBooking()" style="background:#28a745;">I've Paid</button>
+            <button onclick="simulateMpesa()">💳 Pay with M-Pesa App</button>
+            <button onclick="copyPayment()" style="background:#17a2b8;">📋 Copy Payment Details</button>
+            <button onclick="finishBooking()" style="background:#28a745;">✅ I've Paid</button>
             
             <div id="saveStatus" class="status"></div>
         </div>
@@ -235,12 +276,12 @@
             };
             
             const details = `
-                Name: ${name}<br>
-                Phone: ${phone}<br>
-                ID: ${idNum}<br>
-                Date: ${date}<br>
-                Route: Kitui → Mombasa<br>
-                Amount: KSh ${FARE}
+                <strong>Name:</strong> ${name}<br>
+                <strong>Phone:</strong> ${phone}<br>
+                <strong>ID:</strong> ${idNum}<br>
+                <strong>Date:</strong> ${date}<br>
+                <strong>Route:</strong> Kitui → Mombasa<br>
+                <strong>Amount:</strong> KSh ${FARE}
             `;
             document.getElementById('confirmDetails').innerHTML = details;
             document.getElementById('confirmModal').style.display = 'flex';
@@ -254,39 +295,31 @@
             closeModal();
             
             const statusEl = document.getElementById('saveStatus');
-            statusEl.textContent = "Saving booking...";
+            statusEl.textContent = "Saving to SheetDB...";
             statusEl.style.background = "#fff3cd";
             statusEl.style.color = "#856404";
             
             try {
                 const response = await fetch(SHEETDB_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        data: currentBooking
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: currentBooking })
                 });
                 
-                const result = await response.json();
-                
                 if (response.ok) {
-                    statusEl.textContent = "✅ Saved successfully to SheetDB!";
+                    statusEl.textContent = "✅ Booking saved successfully!";
                     statusEl.style.background = "#d4edda";
                     statusEl.style.color = "#155724";
-                    console.log("SheetDB response:", result);
                 } else {
-                    throw new Error(result.message || "Failed to save");
+                    throw new Error("Failed to save");
                 }
             } catch (error) {
-                console.error("Save error:", error);
-                statusEl.textContent = "⚠️ Failed to save. Please try again.";
+                console.error(error);
+                statusEl.textContent = "⚠️ Save failed. Try again.";
                 statusEl.style.background = "#f8d7da";
                 statusEl.style.color = "#721c24";
             }
             
-            // Show payment step
             document.getElementById('bookingInfo').innerHTML = `
                 <p><strong>Booking Code:</strong> <span class="booking-code">${currentBooking.booking_code}</span></p>
             `;
@@ -297,23 +330,22 @@
         }
         
         function simulateMpesa() {
-            alert(`✅ M-Pesa STK Push initiated!\n\nPhone: ${currentBooking.phone}\nAmount: KSh ${currentBooking.fare}\nReference: ${currentBooking.booking_code}`);
+            alert(`M-Pesa Prompt Sent!\n\nPhone: ${currentBooking.phone}\nAmount: KSh ${currentBooking.fare}\nRef: ${currentBooking.booking_code}`);
         }
         
         function copyPayment() {
-            const text = `Paybill: 123456\nAccount: ${currentBooking.booking_code}\nAmount: KSh ${currentBooking.fare}\nName: ${currentBooking.name}`;
+            const text = `Paybill: 123456\nAccount: ${currentBooking.booking_code}\nAmount: KSh ${currentBooking.fare}`;
             navigator.clipboard.writeText(text).then(() => {
-                alert("✅ Payment details copied to clipboard!\n\nOpen M-Pesa → Lipa na M-Pesa → Pay Bill");
+                alert("✅ Details copied! Open M-Pesa now.");
             });
         }
         
         function finishBooking() {
-            alert(`🎉 Booking Confirmed!\n\nCode: ${currentBooking.booking_code}\nThank you for choosing MMSA Bus Services.\nYou will receive SMS confirmation shortly.`);
-            // Reset everything
+            alert(`🎉 Thank you!\n\nBooking Code: ${currentBooking.booking_code}\nSafe travels with MMSA!`);
             document.getElementById('bookingForm').reset();
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step1').classList.add('active');
-            document.getElementById('saveStatus').textContent = '';
+            document.getElementById('saveStatus').innerHTML = '';
         }
         
         // Initialize
