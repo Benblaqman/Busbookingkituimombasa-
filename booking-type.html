@@ -1,0 +1,69 @@
+<div id="bookingTypeSection">
+
+    <h2 style="text-align:center;margin-bottom:20px;">
+        What would you like to book?
+    </h2>
+
+    <div class="route-card" onclick="selectBookingType('seat')">
+        🚌 Seat Booking
+    </div>
+
+    <div class="route-card" onclick="selectBookingType('parcel')">
+        📦 Parcel Booking
+    </div>
+
+</div>
+
+<!-- PARCEL FORM -->
+
+<div id="parcelForm" style="display:none;">
+
+    <h2 style="text-align:center;margin-bottom:20px;">
+        Parcel Details
+    </h2>
+
+    <form id="parcelBookingForm">
+
+        <input
+            type="text"
+            id="senderName"
+            placeholder="Sender Name"
+            required>
+
+        <input
+            type="tel"
+            id="senderPhone"
+            placeholder="Sender Phone Number"
+            required>
+
+        <input
+            type="text"
+            id="receiverName"
+            placeholder="Receiver Name"
+            required>
+
+        <input
+            type="tel"
+            id="receiverPhone"
+            placeholder="Receiver Phone Number"
+            required>
+
+        <select
+            id="parcelCategory"
+            required
+            style="width:100%;padding:15px;margin:12px 0;border:1px solid #ccc;border-radius:8px;">
+
+            <option value="">Select Category</option>
+            <option value="Foodstuff">Foodstuff</option>
+            <option value="Document">Document</option>
+            <option value="Spare Parts">Spare Parts</option>
+
+        </select>
+
+        <button type="submit">
+            Send Parcel Request
+        </button>
+
+    </form>
+
+</div>
