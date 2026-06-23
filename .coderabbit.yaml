@@ -1,0 +1,11 @@
+review:
+  style: thorough        # Options: quick, balanced, thorough
+  language: en           # Review comments in English
+  ignore:
+    - node_modules/**    # Skip dependencies
+    - dist/**            # Skip build output
+    - *.min.js           # Skip minified files
+  rules:
+    prefer_const: true   # Suggest using const where possible
+    no_console: true     # Warn if console.log is left in code
+    max_line_length: 120 # Flag lines longer than 120 chars
